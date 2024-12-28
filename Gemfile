@@ -48,3 +48,7 @@ end
 gem "active_model_serializers"
 
 gem 'faker'
+
+gem 'devise'
+
+gem 'devise-jwt'
