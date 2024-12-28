@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  list: one
+  name: MyString
+  description: MyString
+  deadline: 2024-12-28
+
+two:
+  list: two
+  name: MyString
+  description: MyString
+  deadline: 2024-12-28
