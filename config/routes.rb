@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
+
+  devise_scope :user do
+    put 'users/:id', to: 'users/sessions#update_info'
+    get 'users/:id', to: 'users/sessions#show'
+  end
+
   namespace :api do
     namespace :v1 do
       resources :tasks
