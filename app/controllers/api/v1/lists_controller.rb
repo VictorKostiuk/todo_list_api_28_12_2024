@@ -3,7 +3,7 @@ class Api::V1::ListsController < ApplicationController
 
   # GET /lists
   def index
-    @lists = List.all
+    @lists = current_user.lists
 
     render json: @lists
   end
@@ -15,7 +15,7 @@ class Api::V1::ListsController < ApplicationController
 
   # POST /lists
   def create
-    @list = List.new(list_params)
+    @list = current_user.lists.new(list_params)
 
     if @list.save
       render json: @list, status: :created
@@ -46,6 +46,6 @@ class Api::V1::ListsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def list_params
-      params.require(:list).permit(:name, :user_id)
+      params.require(:list).permit(:name)
     end
 end
