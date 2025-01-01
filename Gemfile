@@ -52,3 +52,8 @@ gem 'faker'
 gem 'devise'
 
 gem 'devise-jwt'
+
+gem "letter_opener", group: :development
+
+gem 'sidekiq'
+

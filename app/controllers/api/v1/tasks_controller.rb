@@ -23,6 +23,7 @@ class Api::V1::TasksController < ApplicationController
     @task = Task.new( @list ? task_params.merge({list_id: @list.id}) : task_params)
 
     if @task.save
+      UserMailer.task_email(current_user).deliver_later
       render json: @task, status: :created
     else
       render json: @task.errors, status: :unprocessable_entity
