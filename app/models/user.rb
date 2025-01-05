@@ -25,4 +25,21 @@ class User < ApplicationRecord
     end
   end
 
+  def google_credentials
+    Google::Auth::UserRefreshCredentials.new(
+      client_id: ENV['GOOGLE_CLIENT_ID'],
+      client_secret: ENV['GOOGLE_CLIENT_SECRET'],
+      token: google_token,
+      refresh_token: google_refresh_token,
+      expires_at: google_token_expires_at
+    )
+  end
+
+  def update_google_tokens(credentials)
+    update(
+      google_token: credentials[:token],
+      google_refresh_token: credentials[:refresh_token],
+      google_token_expires_at: Time.at(credentials[:expires_at])
+    )
+  end
 end

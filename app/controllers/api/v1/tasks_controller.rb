@@ -24,6 +24,7 @@ class Api::V1::TasksController < ApplicationController
 
     if @task.save
       UserMailer.task_email(current_user).deliver_later
+      GoogleCalendarService.new(current_user).create_event(@task)
       render json: @task, status: :created
     else
       render json: @task.errors, status: :unprocessable_entity

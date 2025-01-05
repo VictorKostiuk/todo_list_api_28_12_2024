@@ -57,3 +57,10 @@ gem "letter_opener", group: :development
 
 gem 'sidekiq'
 
+gem 'google-api-client', '~> 0.53.0'
+
+gem 'googleauth', '~> 1.1.0'
+
+gem 'dotenv-rails'
+
+gem "pry"

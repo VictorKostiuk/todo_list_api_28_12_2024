@@ -3,14 +3,26 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
-
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
 
   devise_scope :user do
-    put 'users/:id', to: 'users/sessions#update_info'
-    get 'users/:id', to: 'users/sessions#show'
+    # Route for showing user information
+    get 'users/:id', to: 'users/sessions#show', as: :user_show
+
+    # Route for updating user information
+    put 'users/:id', to: 'users/sessions#update_info', as: :user_update_info
+
+    # Routes for Google OAuth
+    namespace :users do
+      resource :sessions, only: [] do
+        collection do
+          get :google_oauth_url
+          get :google_oauth_callback
+        end
+      end
+    end
   end
 
   namespace :api do
