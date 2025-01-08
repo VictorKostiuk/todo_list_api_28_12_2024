@@ -16,6 +16,8 @@ class Api::V1::ListsController < ApplicationController
   # POST /lists
   def create
     @list = current_user.lists.new(list_params)
+    google_list = GoogleTasksService.new(current_user).create_task_list(@list)
+    @list.google_tasks_list_id = google_list.id
 
     if @list.save
       render json: @list, status: :created

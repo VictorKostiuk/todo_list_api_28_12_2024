@@ -20,11 +20,13 @@ class Api::V1::TasksController < ApplicationController
 
   # POST /tasks
   def create
-    @task = Task.new( @list ? task_params.merge({list_id: @list.id}) : task_params)
+    @task = Task.new(@list ? task_params.merge({list_id: @list.id}) : task_params)
+    task = GoogleTasksService.new(current_user).create_task(@task)
+    @task.google_task_id = task.id
 
     if @task.save
       UserMailer.task_email(current_user).deliver_later
-      GoogleCalendarService.new(current_user).create_event(@task)
+      # GoogleCalendarService.new(current_user).create_event(@task)
       render json: @task, status: :created
     else
       render json: @task.errors, status: :unprocessable_entity
@@ -34,6 +36,7 @@ class Api::V1::TasksController < ApplicationController
   # PATCH/PUT /tasks/1
   def update
     if @task.update(task_params)
+      GoogleTasksService.new(current_user).update_task(@task.list.google_tasks_list_id, @task.google_task_id, task_params)
       render json: @task
     else
       render json: @task.errors, status: :unprocessable_entity
@@ -42,6 +45,7 @@ class Api::V1::TasksController < ApplicationController
 
   # DELETE /tasks/1
   def destroy
+    GoogleTasksService.new(current_user).delete_task(@task.list, @task.google_task_id)
     @task.destroy!
   end
 

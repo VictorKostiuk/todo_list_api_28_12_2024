@@ -46,7 +46,8 @@ class Users::SessionsController < Devise::SessionsController
 
   def google_oauth_url
     client_id = Google::Auth::ClientId.from_file('config/google_api_credentials.json')
-    authorizer = Google::Auth::UserAuthorizer.new(client_id, Google::Apis::CalendarV3::AUTH_CALENDAR, nil, google_oauth_callback_users_sessions_path)
+    # authorizer = Google::Auth::UserAuthorizer.new(client_id, Google::Apis::CalendarV3::AUTH_CALENDAR, nil, google_oauth_callback_users_sessions_path)
+    authorizer = Google::Auth::UserAuthorizer.new(client_id, Google::Apis::TasksV1::AUTH_TASKS, nil, google_oauth_callback_users_sessions_path)
 
     # Use the correct helper method name
     authorization_url = authorizer.get_authorization_url(base_url: "http://127.0.0.1:3000/users/sessions/google_oauth_callback")
@@ -63,7 +64,8 @@ class Users::SessionsController < Devise::SessionsController
 
     authorizer = Google::Auth::UserAuthorizer.new(
       client_id,
-      Google::Apis::CalendarV3::AUTH_CALENDAR,
+      # Google::Apis::CalendarV3::AUTH_CALENDAR,
+      Google::Apis::TasksV1::AUTH_TASKS,
       token_store,
       google_oauth_callback_users_sessions_path
     )
